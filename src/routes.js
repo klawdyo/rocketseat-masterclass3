@@ -7,7 +7,7 @@ const ReportController = require('./controllers/ReportController');
 
 const routes = express.Router();
 
-routes.get('/', (request, response) => response.json({ version: '0.0.1', name: 'Teste rocket' }));
+routes.get('/', (request, response) => response.json({ version: '0.0.2', name: 'Teste rocket' }));
 
 routes.get('/users', UserController.index);
 routes.post('/users', UserController.store);

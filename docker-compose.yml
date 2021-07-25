@@ -1,0 +1,52 @@
+version: "3.7"
+
+# Cria uma rede interna que interliga todos os containers criados
+networks:
+  # A rede se chama backend, pois a estou utilizando para interligar
+  # os containers que serão usados na api. Pode ser qualquer nome.
+  # Nos serviços abaixo, é necessário informar em cada um deles qual
+  # rede eles farão parte. É possível criar várias redes e colocar
+  # cada serviço em mais de uma delas para eles se comuniquem.
+  afiliapp_backend:
+    driver: "bridge"
+
+services:
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   volumes:
+  #     - ./.dbcache/mongo2/data:/data2/db
+  #   ports:
+  #     - "27019:27017"
+  #   networks:
+  #     - afiliapp_backend
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: root
+
+  # 3306:3306 - a primeira porta é do meu computador que está vinculada com a porta 3306 da máquina virtual
+  mysql:
+    image: mysql:5.7.34
+    # image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+    ports:
+      - "3306:3306"
+    networks:
+      - afiliapp_backend
+    # volumes:
+    #   - ./.dbcache/mysql/data:/data/db
+    restart: on-failure
+    command: --default-authentication-plugin=mysql_native_password
+
+  # api:
+  #   image: node:12-slim
+  #   ports:
+  #     - "3000:3000"
+  #   working_dir: /home/node/app
+  #   volumes:
+  #     - .:/home/node/app
+  #   command: "npm start"
+  #   restart: unless-stopped
+  #   networks:
+  #     - afiliapp_backend
